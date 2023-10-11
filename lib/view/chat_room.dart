@@ -42,10 +42,10 @@ class _ChatRoomState extends State<ChatRoom> {
     int status = 1;
 
     await _firestore.collection(widget.chatRoomId).doc(fileName).set({
-      "s": sharedPreferences.getString("email"),
-      "m": "",
-      "t": "img",
-      "ts": FieldValue.serverTimestamp(),
+      "sender": sharedPreferences.getString("email"),
+      "message": "",
+      "type": "img",
+      "timestamp": FieldValue.serverTimestamp(),
     });
 
     var ref =
@@ -63,17 +63,17 @@ class _ChatRoomState extends State<ChatRoom> {
       await _firestore
           .collection(widget.chatRoomId)
           .doc(fileName)
-          .update({"m": imageUrl});
+          .update({"message": imageUrl});
     }
   }
 
   void onSendMessage() async {
     if (_message.text.isNotEmpty) {
       Map<String, dynamic> messages = {
-        "s": sharedPreferences.getString("email"),
-        "m": _message.text,
-        "t": "text",
-        "ts": FieldValue.serverTimestamp(),
+        "sender": sharedPreferences.getString("email"),
+        "message": _message.text,
+        "type": "text",
+        "timestamp": FieldValue.serverTimestamp(),
       };
       await _firestore.collection(widget.chatRoomId).add(messages);
       _message.clear();
@@ -178,7 +178,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   child: StreamBuilder<QuerySnapshot>(
                     stream: _firestore
                         .collection(widget.chatRoomId)
-                        .orderBy("ts", descending: false)
+                        .orderBy("timestamp", descending: false)
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -287,10 +287,10 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   Widget messages(Size size, Map<String, dynamic> map, BuildContext context) {
-    return map['t'] == "text"
+    return map['type'] == "text"
         ? Container(
             width: size.width,
-            alignment: map['s'] == sharedPreferences.getString("email")
+            alignment: map['sender'] == sharedPreferences.getString("email")
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
             child: Container(
@@ -306,7 +306,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 color: Colors.blue,
               ),
               child: Text(
-                map['m'],
+                map['message'],
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -319,14 +319,14 @@ class _ChatRoomState extends State<ChatRoom> {
             height: size.height / 2.5,
             width: size.width,
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-            alignment: map['s'] == sharedPreferences.getString("email")
+            alignment: map['sender'] == sharedPreferences.getString("email")
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
             child: InkWell(
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => ShowImage(
-                    imageUrl: map['m'],
+                    imageUrl: map['message'],
                   ),
                 ),
               ),
@@ -335,12 +335,12 @@ class _ChatRoomState extends State<ChatRoom> {
                 width: size.width / 2,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                alignment: map['m'] != "" ? null : Alignment.center,
-                child: map['m'] != ""
+                alignment: map['message'] != "" ? null : Alignment.center,
+                child: map['message'] != ""
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
-                          map['m'],
+                          map['message'],
                           fit: BoxFit.cover,
                         ),
                       )

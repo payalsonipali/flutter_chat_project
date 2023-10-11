@@ -67,6 +67,7 @@ class AuthenticationService {
       return;
     }
     await sharedPreferences.setString('email', currentUser.email!);
+    await sharedPreferences.setBool('isLoggedIn', true);
   }
 
   Future signOut() async {

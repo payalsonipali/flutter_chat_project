@@ -12,40 +12,17 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await SharedPref.init();
+  SharedPreferences prefs = await SharedPref.instance;
+  bool isUserLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   runApp(
       ChangeNotifierProvider(
         create: (context) => PasswordProvider(), // Replace with your data model.
-        child: const MyApp(),
+        child: MaterialApp(
+                title: "Chatting App",
+                debugShowCheckedModeBanner: false,
+                routes: Routes.routes,
+                home:isUserLoggedIn ? Home() : const Login()
+              ),
       ),
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Chatting App",
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
-      routes: Routes.routes,
-      home: FutureBuilder<bool>(
-        future: checkUserLoggedIn(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-            return const CircularProgressIndicator();
-          } else {
-            return snapshot.data!  ? Home() : const Login();
-          }
-        },
-      ),
-    );
-  }
-
-  Future<bool> checkUserLoggedIn() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String email = prefs.getString('email') ?? '';
-    return email.isNotEmpty;
-  }
 }

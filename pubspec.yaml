@@ -41,7 +41,6 @@ dependencies:
   url_launcher:
   firebase_storage:
   cloud_firestore:
-  firebase_admin:
   image_picker:
   bouncing_widget:
   uuid:
