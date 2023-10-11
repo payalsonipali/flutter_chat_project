@@ -1,7 +1,7 @@
-import 'package:chatting_app/provider.dart';
+import 'package:chatting_app/utils/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:chatting_app/shared_preference.dart';
+import 'package:chatting_app/utils/shared_preference.dart';
 import 'package:chatting_app/routes.dart';
 import 'package:chatting_app/view/home.dart';
 import 'package:chatting_app/view/login.dart';

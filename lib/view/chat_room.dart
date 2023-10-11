@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:bouncing_widget/bouncing_widget.dart';
-import 'package:chatting_app/shared_preference.dart';
+import 'package:chatting_app/utils/shared_preference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

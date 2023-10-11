@@ -1,6 +1,6 @@
-import 'package:chatting_app/provider.dart';
+import 'package:chatting_app/utils/provider.dart';
 import 'package:chatting_app/services/authentication_service.dart';
-import 'package:chatting_app/utils.dart';
+import 'package:chatting_app/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
